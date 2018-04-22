@@ -15,9 +15,9 @@ class CreateSalesTable extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id');
-            $table->float('amount');
+            $table->string('amount');
             $table->integer('quantity');
-            $table->float('total');
+            $table->string('total');
             $table->string('promo_code');
             $table->integer('customer_id')->unsigned();
             $table->integer('product_id')->unsigned();

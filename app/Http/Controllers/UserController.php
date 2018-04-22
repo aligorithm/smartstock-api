@@ -40,8 +40,8 @@ class UserController extends Controller
             'role' => $request->get('role'),
             'password' => Hash::make($request->get('password')),
         ]);
-        $token = auth()->attempt([$request->get('email'),$request->get('password')]);
-        return response()->json(['user'=>$user,'token'=>"Bearer ".$token]);
+        $token = auth()->attempt(\request(['email','password']));
+        return response()->json(['user'=>$user,'token'=>"Bearer ".$token])->setStatusCode(201,"Object created");
     }
 
 

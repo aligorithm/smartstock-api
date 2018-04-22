@@ -5,16 +5,22 @@ namespace App\Http\Controllers;
 use App\Product;
 use Illuminate\Http\Request;
 
+/**
+ * @resource Product
+ *
+ * Operations on Products
+ */
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+//        $this->middleware("auth:api");
+    }
+
+
     public function index()
     {
-        return Product::all();
+        return response()->json(Product::all());
     }
 
     /**
@@ -22,6 +28,8 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    /**@hideFromAPIDocumentation
+     * */
     public function create()
     {
         //
@@ -35,7 +43,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -55,6 +63,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    /**@hideFromAPIDocumentation
+     * */
     public function edit($id)
     {
         //
@@ -80,6 +91,6 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
 }

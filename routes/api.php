@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-$api = app('Dingo\Api\Routing\Router');
-
-$api->version('v1', function ($api) {
-    $api->get('products', ['as' => 'products.index', 'uses' => 'App\Http\Controllers\ProductController@index']);
+Route::prefix('user')->group(function (){
+    Route::post('register','UserController@register');
+    Route::post('login','UserController@login');
 });
+
+Route::resource('product','ProductController')->middleware('api');

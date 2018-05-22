@@ -18,6 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('code');
+            $table->string('price');
+            $table->integer('quantity');
             $table->integer('brand_id')->unsigned();
             $table->integer('category_id')->unsigned();
             $table->timestamps();

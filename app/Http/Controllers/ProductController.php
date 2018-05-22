@@ -34,27 +34,24 @@ class ProductController extends Controller
     {
         //
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-
+        $this->validate($request,[
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'code' => 'required|string',
+            'price' => 'required|string',
+            'quantity' => 'required|integer',
+            'brand_id' => 'required|integer',
+            'category_id' => 'required|integer',
+        ]);
+        $product = Product::create($request->all());
+        return response()->json(['product'=>$product])->setStatusCode(201,"Resource created");
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        $product = Product::find($id);
+        return response()->json($product)->setStatusCode(200);
     }
 
     /**
@@ -71,26 +68,22 @@ class ProductController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::find($id);
+        $product->name = $request->get('name');
+        $product->description = $request->get('description');
+        $product->code = $request->get('code');
+        $product->price = $request->get('price');
+        $product->quantity = $request->get('quantity');
+        $product->brand_id = $request->get('brand_id');
+        $product->category_id = $request->get('category_id');
+        $product->save();
+        return response()->setStatusCode(204,"Resource Updated");
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-
+        Product::destroy($id);
+        return response()->setStatusCode(200);
     }
 }

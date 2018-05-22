@@ -24,3 +24,5 @@ Route::resource('brand','BrandController')->middleware('auth:api');
 Route::resource('sale','SaleController')->middleware('auth:api');
 Route::resource('category','CategoryController')->middleware('auth:api');
 Route::resource('customer','CustomerController')->middleware('auth:api');
+Route::put('sale/add/{id}','SaleController@add')->middleware('auth:api');
+Route::put('sale/subtract/{id}','SaleController@subtract')->middleware('auth:api');

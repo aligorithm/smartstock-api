@@ -17,7 +17,9 @@ class ProductSeeder extends Seeder
             'description' => str_random(10),
             'code' => str_random(10),
             'brand_id' => 1,
-            'category_id' => 1
+            'category_id' => 1,
+            'quantity' => 0,
+            'price' => "20"
         ]);
     }
 }

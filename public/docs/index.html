@@ -75,7 +75,7 @@ $.ajax(settings).done(function (response) {
 <pre><code class="language-json">[
     {
         "id": 1,
-        "name": "htieXv",
+        "name": "A3lXuu",
         "created_at": null,
         "updated_at": null
     }
@@ -161,7 +161,7 @@ $.ajax(settings).done(function (response) {
 </blockquote>
 <pre><code class="language-json">{
     "id": 1,
-    "name": "htieXv",
+    "name": "A3lXuu",
     "created_at": null,
     "updated_at": null
 }</code></pre>
@@ -271,7 +271,7 @@ $.ajax(settings).done(function (response) {
 <pre><code class="language-json">[
     {
         "id": 1,
-        "name": "obw4A7",
+        "name": "iHDatg",
         "created_at": null,
         "updated_at": null
     }
@@ -357,7 +357,7 @@ $.ajax(settings).done(function (response) {
 </blockquote>
 <pre><code class="language-json">{
     "id": 1,
-    "name": "obw4A7",
+    "name": "iHDatg",
     "created_at": null,
     "updated_at": null
 }</code></pre>
@@ -652,9 +652,11 @@ $.ajax(settings).done(function (response) {
 <pre><code class="language-json">[
     {
         "id": 1,
-        "name": "7O1zHG",
-        "description": "6B1ckBIcpo",
-        "code": "UKkaBqIsab",
+        "name": "AIzPwF",
+        "description": "HsEeROGjuR",
+        "code": "fU4pBZJXTr",
+        "price": "20",
+        "quantity": 0,
         "brand_id": 1,
         "category_id": 1,
         "created_at": null,
@@ -694,7 +696,7 @@ $.ajax(settings).done(function (response) {
 <p><code>HEAD api/product/create</code></p>
 <!-- END_37054d86ee56e63ac0b9564851abb3d9 -->
 <!-- START_2d62ba7cf16a7d6db447375e13e86c34 -->
-<h2>Store a newly created resource in storage.</h2>
+<h2>api/product</h2>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
@@ -717,7 +719,7 @@ $.ajax(settings).done(function (response) {
 <p><code>POST api/product</code></p>
 <!-- END_2d62ba7cf16a7d6db447375e13e86c34 -->
 <!-- START_9bfa1a3fcf0ac9c9d6938d433735756c -->
-<h2>Display the specified resource.</h2>
+<h2>api/product/{product}</h2>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
@@ -739,7 +741,18 @@ $.ajax(settings).done(function (response) {
 <blockquote>
 <p>Example response:</p>
 </blockquote>
-<pre><code class="language-json">null</code></pre>
+<pre><code class="language-json">{
+    "id": 1,
+    "name": "AIzPwF",
+    "description": "HsEeROGjuR",
+    "code": "fU4pBZJXTr",
+    "price": "20",
+    "quantity": 0,
+    "brand_id": 1,
+    "category_id": 1,
+    "created_at": null,
+    "updated_at": null
+}</code></pre>
 <h3>HTTP Request</h3>
 <p><code>GET api/product/{product}</code></p>
 <p><code>HEAD api/product/{product}</code></p>
@@ -773,7 +786,7 @@ $.ajax(settings).done(function (response) {
 <p><code>HEAD api/product/{product}/edit</code></p>
 <!-- END_51c32087ba9a8153862b343f2439f14a -->
 <!-- START_682327ab9f9deab00b7c603486ad935a -->
-<h2>Update the specified resource in storage.</h2>
+<h2>api/product/{product}</h2>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
@@ -797,7 +810,7 @@ $.ajax(settings).done(function (response) {
 <p><code>PATCH api/product/{product}</code></p>
 <!-- END_682327ab9f9deab00b7c603486ad935a -->
 <!-- START_587b06cc0dc038b2e049f3a1baa2593b -->
-<h2>Remove the specified resource from storage.</h2>
+<h2>api/product/{product}</h2>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
@@ -1003,6 +1016,52 @@ $.ajax(settings).done(function (response) {
 <h3>HTTP Request</h3>
 <p><code>DELETE api/sale/{sale}</code></p>
 <!-- END_f8c1b1f9d919cf624a78322df6c43241 -->
+<!-- START_6df85b3b5aff0e76c1a2a2caa7495ee9 -->
+<h2>api/sale/add/{id}</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X PUT "http://localhost:8000/api/sale/add/{id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/sale/add/{id}",
+    "method": "PUT",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/sale/add/{id}</code></p>
+<!-- END_6df85b3b5aff0e76c1a2a2caa7495ee9 -->
+<!-- START_aa35f540807f5c4ec9931142b0925060 -->
+<h2>api/sale/subtract/{id}</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X PUT "http://localhost:8000/api/sale/subtract/{id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/sale/subtract/{id}",
+    "method": "PUT",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/sale/subtract/{id}</code></p>
+<!-- END_aa35f540807f5c4ec9931142b0925060 -->
 <h1>general</h1>
 <!-- START_638687f1aca2f1e69b360d1516c7c1f9 -->
 <h2>api/user/register</h2>

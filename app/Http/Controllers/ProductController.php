@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Brand;
+use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -46,7 +48,7 @@ class ProductController extends Controller
             'category_id' => 'required|integer',
         ]);
         $product = Product::create($request->all());
-        return response()->json(['product'=>$product])->setStatusCode(201,"Resource created");
+        return response()->json(['product'=>$product, 'brand' => Brand::find($product->brand_id), 'category' => Category::find($product->category_id)])->setStatusCode(201,"Resource created");
     }
     public function show($id)
     {

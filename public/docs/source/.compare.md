@@ -52,7 +52,7 @@ $.ajax(settings).done(function (response) {
 [
     {
         "id": 1,
-        "name": "htieXv",
+        "name": "A3lXuu",
         "created_at": null,
         "updated_at": null
     }
@@ -173,7 +173,7 @@ $.ajax(settings).done(function (response) {
 ```json
 {
     "id": 1,
-    "name": "htieXv",
+    "name": "A3lXuu",
     "created_at": null,
     "updated_at": null
 }
@@ -328,7 +328,7 @@ $.ajax(settings).done(function (response) {
 [
     {
         "id": 1,
-        "name": "obw4A7",
+        "name": "iHDatg",
         "created_at": null,
         "updated_at": null
     }
@@ -449,7 +449,7 @@ $.ajax(settings).done(function (response) {
 ```json
 {
     "id": 1,
-    "name": "obw4A7",
+    "name": "iHDatg",
     "created_at": null,
     "updated_at": null
 }
@@ -870,9 +870,11 @@ $.ajax(settings).done(function (response) {
 [
     {
         "id": 1,
-        "name": "7O1zHG",
-        "description": "6B1ckBIcpo",
-        "code": "UKkaBqIsab",
+        "name": "AIzPwF",
+        "description": "HsEeROGjuR",
+        "code": "fU4pBZJXTr",
+        "price": "20",
+        "quantity": 0,
         "brand_id": 1,
         "category_id": 1,
         "created_at": null,
@@ -930,7 +932,7 @@ null
 <!-- END_37054d86ee56e63ac0b9564851abb3d9 -->
 
 <!-- START_2d62ba7cf16a7d6db447375e13e86c34 -->
-## Store a newly created resource in storage.
+## api/product
 
 > Example request:
 
@@ -963,7 +965,7 @@ $.ajax(settings).done(function (response) {
 <!-- END_2d62ba7cf16a7d6db447375e13e86c34 -->
 
 <!-- START_9bfa1a3fcf0ac9c9d6938d433735756c -->
-## Display the specified resource.
+## api/product/{product}
 
 > Example request:
 
@@ -991,7 +993,18 @@ $.ajax(settings).done(function (response) {
 > Example response:
 
 ```json
-null
+{
+    "id": 1,
+    "name": "AIzPwF",
+    "description": "HsEeROGjuR",
+    "code": "fU4pBZJXTr",
+    "price": "20",
+    "quantity": 0,
+    "brand_id": 1,
+    "category_id": 1,
+    "created_at": null,
+    "updated_at": null
+}
 ```
 
 ### HTTP Request
@@ -1043,7 +1056,7 @@ null
 <!-- END_51c32087ba9a8153862b343f2439f14a -->
 
 <!-- START_682327ab9f9deab00b7c603486ad935a -->
-## Update the specified resource in storage.
+## api/product/{product}
 
 > Example request:
 
@@ -1078,7 +1091,7 @@ $.ajax(settings).done(function (response) {
 <!-- END_682327ab9f9deab00b7c603486ad935a -->
 
 <!-- START_587b06cc0dc038b2e049f3a1baa2593b -->
-## Remove the specified resource from storage.
+## api/product/{product}
 
 > Example request:
 
@@ -1373,6 +1386,72 @@ $.ajax(settings).done(function (response) {
 
 
 <!-- END_f8c1b1f9d919cf624a78322df6c43241 -->
+
+<!-- START_6df85b3b5aff0e76c1a2a2caa7495ee9 -->
+## api/sale/add/{id}
+
+> Example request:
+
+```bash
+curl -X PUT "http://localhost:8000/api/sale/add/{id}" \
+-H "Accept: application/json"
+```
+
+```javascript
+var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/sale/add/{id}",
+    "method": "PUT",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});
+```
+
+
+### HTTP Request
+`PUT api/sale/add/{id}`
+
+
+<!-- END_6df85b3b5aff0e76c1a2a2caa7495ee9 -->
+
+<!-- START_aa35f540807f5c4ec9931142b0925060 -->
+## api/sale/subtract/{id}
+
+> Example request:
+
+```bash
+curl -X PUT "http://localhost:8000/api/sale/subtract/{id}" \
+-H "Accept: application/json"
+```
+
+```javascript
+var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/sale/subtract/{id}",
+    "method": "PUT",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});
+```
+
+
+### HTTP Request
+`PUT api/sale/subtract/{id}`
+
+
+<!-- END_aa35f540807f5c4ec9931142b0925060 -->
 
 #general
 <!-- START_638687f1aca2f1e69b360d1516c7c1f9 -->

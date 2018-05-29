@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\Promo;
 use App\Sale;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 /**
@@ -36,12 +38,26 @@ class SaleController extends Controller
             'amount' => 'required|string',
             'quantity' => 'required|integer',
             'total' => 'required|string',
-            'promo_code' => 'string',
             'customer_id' => 'required|integer',
             'product_id' => 'required|integer',
             'staff_id' => 'required|integer',
         ]);
-        $sale = Sale::create($request->all());
+        if (!empty($request->get('promo_code'))){
+            $promo = Promo::all()->where('code',$request->get('promo_code'))->first();
+            $expiryCarbon = Carbon::createFromFormat('d/m/Y', $promo->expiry);
+            if ($expiryCarbon->isPast()){
+                $sale = new Sale();
+                $sale->amount = $request->get('amount');
+                $sale->quantity = $request->get('quantity');
+                $sale->total = ($request->get('total') - ($promo->discount / 100) * $request->get('total'));
+                $sale->customer_id = $request->get('customer_id');
+                $sale->product_id = $request->get('product_id');
+                $sale->staff_id = $request->get('staff_id');
+                $sale->save();
+            }
+        }else{
+            $sale = Sale::create($request->all());
+        }
         $product = Product::find($sale->product_id);
         $product->quantity = $product->quantity - $sale->quantity;
         $product->save;
@@ -83,6 +99,8 @@ class SaleController extends Controller
         $sale->added = $sale->added + $request->get('quantity');
         $sale->total = $sale->quantity * $sale->price;
         $sale->save();
+        $product = Product::find($sale->product_id);
+        $product->quantity = $product->quantity - $request->get('quantity');
         return response()->setStatusCode(204,"Resource Updated");
     }
     public function subtract(Request $request, $id){
@@ -94,6 +112,8 @@ class SaleController extends Controller
         $sale->subtracted = $sale->added + $request->get('quantity');
         $sale->total = $sale->quantity * $sale->price;
         $sale->save();
+        $product = Product::find($sale->product_id);
+        $product->quantity = $product->quantity + $request->get('quantity');
         return response()->setStatusCode(204,"Resource Updated");
     }
 }

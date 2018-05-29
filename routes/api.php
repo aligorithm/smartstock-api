@@ -19,10 +19,11 @@ Route::prefix('user')->group(function (){
     Route::post('login','UserController@login');
 });
 
-Route::resource('product','ProductController');
-Route::resource('brand','BrandController');
-Route::resource('sale','SaleController');
-Route::resource('category','CategoryController');
-Route::resource('customer','CustomerController');
-Route::put('sale/add/{id}','SaleController@add');
-Route::put('sale/subtract/{id}','SaleController@subtract');
+Route::resource('product','ProductController')->middleware('auth');
+Route::resource('brand','BrandController')->middleware('auth');
+Route::resource('sale','SaleController')->middleware('auth');
+Route::resource('category','CategoryController')->middleware('auth');
+Route::resource('customer','CustomerController')->middleware('auth');
+Route::put('sale/add/{id}','SaleController@add')->middleware('auth');
+Route::put('sale/subtract/{id}','SaleController@subtract')->middleware('auth');
+Route::resource('promo','PromoController')->middleware('auth');

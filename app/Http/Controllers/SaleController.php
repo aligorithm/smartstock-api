@@ -34,6 +34,7 @@ class SaleController extends Controller
 
     public function store(Request $request)
     {
+        $request->user()->authorizeRoles(['seller']);
         $this->validate($request,[
             'amount' => 'required|string',
             'quantity' => 'required|integer',
@@ -66,23 +67,22 @@ class SaleController extends Controller
 
     public function update(Request $request, $id)
     {
-        $sale = Sale::find($id);
-        $sale->amount = $request->get('amount');
-        $sale->quantity = $request->get('quantity');
-        $sale->total = $request->get('total');
-        $sale->promo_code = $request->get('promo_code');
-        $sale->customer_id = $request->get('customer_id');
-        $sale->product_id = $request->get('product_id');
-        $sale->staff_id = $request->get('staff_id');
-        $sale->save();
-        return response()->setStatusCode(204,"Resource Updated");
+//
+//        $sale = Sale::find($id);
+//        $sale->amount = $request->get('amount');
+//        $sale->quantity = $request->get('quantity');
+//        $sale->total = $request->get('total');
+//        $sale->promo_code = $request->get('promo_code');
+//        $sale->customer_id = $request->get('customer_id');
+//        $sale->product_id = $request->get('product_id');
+//        $sale->staff_id = $request->get('staff_id');
+//        $sale->save();
+        return response()->setStatusCode(400,"Unsupported Action");
     }
 
     public function destroy($id)
     {
-        $sale = Sale::find($id);
-        $sale->delete();
-        return response()->setStatusCode(204,"Resource Deleted");
+        return response()->setStatusCode(400,"Delete not supported for this resource");
     }
     public function show($id)
     {
@@ -91,6 +91,7 @@ class SaleController extends Controller
     }
 
     public function add(Request $request, $id){
+        $request->user()->authorizeRoles(['seller']);
         $this->validate($request,[
             'quantity' => 'required'
         ]);
@@ -104,6 +105,7 @@ class SaleController extends Controller
         return response()->setStatusCode(204,"Resource Updated");
     }
     public function subtract(Request $request, $id){
+        $request->user()->authorizeRoles(['seller']);
         $this->validate($request,[
             'quantity' => 'required'
         ]);

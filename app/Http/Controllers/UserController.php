@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,6 +27,9 @@ class UserController extends Controller
     }
     public function register(Request $request)
     {
+        $request->user()->authorizeRoles(['manager']);
+        $role_seller = Role::where("name", "seller")->first();
+        $role_manager  = Role::where("name", "manager")->first();
         $this->validate($request,[
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -33,6 +37,7 @@ class UserController extends Controller
             'phone' => 'required|string',
             'role' => 'required|string'
         ]);
+
         $user =  User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
@@ -40,6 +45,11 @@ class UserController extends Controller
             'role' => $request->get('role'),
             'password' => Hash::make($request->get('password')),
         ]);
+        if ($request->get("role") == "seller"){
+            $user->roles()->attach($role_seller);
+        } elseif ($request->get("role") == "manager"){
+            $user->roles()->attach($role_manager);
+        }
         $token = auth()->attempt(\request(['email','password']));
         return response()->json(['user'=>$user,'token'=>"Bearer ".$token])->setStatusCode(201,"Object created");
     }
@@ -47,7 +57,7 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+       //
     }
     public function destroy($id)
     {

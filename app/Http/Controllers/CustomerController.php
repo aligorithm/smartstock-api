@@ -26,11 +26,13 @@ class CustomerController extends Controller
     public function edit(){}
     public function index()
     {
+        $request->user()->authorizeRoles(['manager']);
         return response()->json(Customer::all());
     }
 
     public function store(Request $request)
     {
+        $request->user()->authorizeRoles(['seller']);
         $this->validate($request,[
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
@@ -43,6 +45,7 @@ class CustomerController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->user()->authorizeRoles(['seller']);
         $this->validate($request,[
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
@@ -60,6 +63,7 @@ class CustomerController extends Controller
 
     public function destroy($id)
     {
+        \request()->user()->authorizeRoles(['manager']);
         $customer = Customer::find($id);
         $customer->delete();
         return response()->setStatusCode(204,"Resource Deleted");

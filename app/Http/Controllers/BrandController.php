@@ -31,6 +31,7 @@ class BrandController extends Controller
 
     public function store(Request $request)
     {
+        $request->user()->authorizeRoles(['manager']);
         $this->validate($request,[
             'name' => 'required|string|max:255'
         ]);
@@ -40,6 +41,7 @@ class BrandController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->user()->authorizeRoles(['manager']);
         $this->validate($request,[
             'name' => 'required|string|max:255'
         ]);
@@ -51,6 +53,7 @@ class BrandController extends Controller
 
     public function destroy($id)
     {
+        \request()->user()->authorizeRoles(['manager']);
         $brand = Brand::find($id);
         $brand->delete();
         return response()->setStatusCode(204,"Resource Deleted");

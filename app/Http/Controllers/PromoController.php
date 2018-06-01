@@ -18,6 +18,7 @@ class PromoController extends Controller
      */
     public function index()
     {
+        $request->user()->authorizeRoles(['manager']);
         return response()->json(Promo::all());
     }
 
@@ -31,6 +32,7 @@ class PromoController extends Controller
 
     public function store(Request $request)
     {
+        $request->user()->authorizeRoles(['manager']);
         $this->validate($request,[
             'code' => 'required|string',
             'expiry' => 'required|string',
@@ -56,6 +58,7 @@ class PromoController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->user()->authorizeRoles(['manager']);
         $this->validate($request,[
             'code' => 'required|string',
             'expiry' => 'required|string',
@@ -69,6 +72,7 @@ class PromoController extends Controller
 
     public function destroy($id)
     {
+        \request()->user()->authorizeRoles(['manager']);
         Promo::destroy($id);
         return response(null,200);
     }

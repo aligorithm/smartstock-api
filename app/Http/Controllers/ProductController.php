@@ -17,13 +17,12 @@ class ProductController extends Controller
 {
     public function __construct()
     {
-//        $this->middleware("auth:api");
+
     }
 
 
     public function index()
     {
-        return response()->json(Product::all());
     }
 
     /**
@@ -39,6 +38,7 @@ class ProductController extends Controller
     }
     public function store(Request $request)
     {
+        $request->user()->authorizeRoles(['manager']);
         $this->validate($request,[
             'name' => 'required|string',
             'description' => 'required|string',
@@ -75,6 +75,7 @@ class ProductController extends Controller
     }
     public function show($id)
     {
+        \request()->user()->authorizeRoles(['manager']);
         $product = Product::find($id);
         return response()->json($product)->setStatusCode(200);
     }
@@ -95,6 +96,7 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->user()->authorizeRoles(['manager']);
         $product = Product::find($id);
         $product->name = $request->get('name');
         $product->description = $request->get('description');
@@ -108,6 +110,7 @@ class ProductController extends Controller
     }
     public function destroy($id)
     {
+        \request()->user()->authorizeRoles(['manager']);
         Product::destroy($id);
         return response()->setStatusCode(200);
     }

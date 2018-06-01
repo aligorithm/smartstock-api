@@ -16,10 +16,10 @@ class UserSeeder extends Seeder
     {
         $user = User::create([
             'name' => "Boss",
-            'email' => "boss@example.com",
+            'email' => "boss",
             'phone' => "09090909090",
             'role' => "manager",
-            'password' => Hash::make("default"),
+            'password' => Hash::make("boss"),
         ]);
         $user->roles()->attach(Role::where("name", "manager")->first());
     }

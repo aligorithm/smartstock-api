@@ -6,13 +6,13 @@ use App\Role;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','register']]);
     }
 
     public function login()
@@ -32,7 +32,7 @@ class UserController extends Controller
         $role_manager  = Role::where("name", "manager")->first();
         $this->validate($request,[
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|max:255|unique:users',
             'password' => 'required|string',
             'phone' => 'required|string',
             'role' => 'required|string'

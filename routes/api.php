@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('user')->group(function (){
     Route::post('register','UserController@register');
     Route::post('login','UserController@login');
+    Route::get('list','UserController@index');
+    Route::post('update','UserController@update');
 });
 
 Route::resource('product','ProductController')->middleware('auth');

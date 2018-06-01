@@ -23,6 +23,7 @@ class ProductController extends Controller
 
     public function index()
     {
+        \request()->user()->authorizeRoles(['manager']);
         return response()->json(Product::with(['category','brand'])->get());
     }
 

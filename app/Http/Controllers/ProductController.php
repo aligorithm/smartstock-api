@@ -46,6 +46,7 @@ class ProductController extends Controller
             'description' => 'required|string',
             'price' => 'required|string',
             'quantity' => 'required|integer',
+            'code' => 'required|string',
             'brand' => 'required|string',
             'category' => 'required|string',
         ]);
@@ -102,11 +103,26 @@ class ProductController extends Controller
         $product = Product::find($id);
         $product->name = $request->get('name');
         $product->description = $request->get('description');
-        $product->code = $request->get('code');
         $product->price = $request->get('price');
         $product->quantity = $request->get('quantity');
-        $product->brand_id = $request->get('brand_id');
-        $product->category_id = $request->get('category_id');
+        $product->brand = $request->get('brand');
+        $product->category = $request->get('category');
+        if (Brand::where("name",$request->get("brand"))->count() > 0){
+            $brand = Brand::where("name",$request->get("brand"))->first();
+            $product->brand_id = $brand->id;
+        } else{
+            $brand = new Brand(["name" => $request->get("brand")]);
+            $brand->save();
+            $product->brand_id = $brand->id;
+        }
+        if (Category::where("name",$request->get("category"))->count() > 0){
+            $category = Category::where("name",$request->get("category"))->first();
+            $product->category_id = $category->id;
+        } else{
+            $category = new Category(["name" => $request->get("category")]);
+            $category->save();
+            $product->category_id = $category->id;
+        }
         $product->save();
         return response()->setStatusCode(204,"Resource Updated");
     }

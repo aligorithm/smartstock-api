@@ -14,18 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('user')->group(function (){
-    Route::post('register','UserController@register');
-    Route::post('login','UserController@login');
-    Route::get('list','UserController@index');
-    Route::post('update','UserController@update');
-});
-
-Route::resource('product','ProductController')->middleware('auth');
-Route::resource('brand','BrandController')->middleware('auth');
-Route::resource('sale','SaleController')->middleware('auth');
-Route::resource('category','CategoryController')->middleware('auth');
-Route::resource('customer','CustomerController')->middleware('auth');
-Route::put('sale/add/{id}','SaleController@add')->middleware('auth');
-Route::put('sale/subtract/{id}','SaleController@subtract')->middleware('auth');
-Route::resource('promo','PromoController')->middleware('auth');
+Route::post('user/register','UserController@register')->middleware('auth:api');
+Route::post('user/login','UserController@login');
+Route::get('user/list','UserController@index')->middleware('auth:api');
+Route::post('user/update','UserController@update')->middleware('auth:api');
+Route::resource('product','ProductController')->middleware('auth:api');
+Route::resource('brand','BrandController')->middleware('auth:api');
+Route::resource('sale','SaleController')->middleware('auth:api');
+Route::resource('category','CategoryController')->middleware('auth:api');
+Route::resource('customer','CustomerController')->middleware('auth:api');
+Route::put('sale/add/{id}','SaleController@add')->middleware('auth:api');
+Route::put('sale/subtract/{id}','SaleController@subtract')->middleware('auth:api');
+Route::resource('promo','PromoController')->middleware('auth:api');

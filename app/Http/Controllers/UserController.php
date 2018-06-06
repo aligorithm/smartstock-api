@@ -22,13 +22,17 @@ class UserController extends Controller
 
     public function login()
     {
-        $credentials = request(['email', 'password']);
-
-        if (! $token = auth()->attempt($credentials)) {
+        $token = '';
+        if (User::all()->where('email','=',\request('email'))->count() > 0){
+            $user = User::all()->where('email','=',\request('email'))->first();
+            if (Hash::check(\request('password'),$user->password)){
+                $token = $user->createToken(\request('email'))->accessToken;
+            }
+        }else{
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+        return response()->json(['user'=> $user,'token'=> "Bearer ".$token]);
 
-        return response()->json(['user'=> auth()->user(),'token'=> "Bearer ".$token]);
     }
     public function register(Request $request)
     {

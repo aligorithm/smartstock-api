@@ -40,7 +40,7 @@ class User extends Authenticatable
         return null !== $this->roles()->where("name", $role)->first();
     }
     public function sales(){
-        return $this->hasMany(Sale::class);
+        return $this->hasMany(Sale::class,'staff_id');
     }
     public function orders(){
         return $this->hasMany(Order::class);

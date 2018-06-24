@@ -20,12 +20,12 @@ class UserController extends Controller
         return response()->json(User::all());
     }
 
-    public function login()
+    public function login(Request $request)
     {
         $token = '';
-        if (User::all()->where('email','=',\request('email'))->count() > 0){
-            $user = User::all()->where('email','=',\request('email'))->first();
-            if (Hash::check(\request('password'),$user->password)){
+        if (User::all()->where('email','=',$request->get('email'))->count() > 0){
+            $user = User::all()->where('email','=',$request->get('email'))->first();
+            if (Hash::check($request->get('password'),$user->password)){
                 $token = $user->createToken(\request('email'))->accessToken;
             }
         }else{
@@ -59,7 +59,7 @@ class UserController extends Controller
         } elseif ($request->get("role") == "manager"){
             $user->roles()->attach($role_manager);
         }
-        $token = auth()->attempt(\request(['email','password']));
+        $token = $user->createToken(\request('email'))->accessToken;
         return response()->json(['user'=>$user,'token'=>"Bearer ".$token])->setStatusCode(201,"Object created");
     }
 

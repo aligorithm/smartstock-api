@@ -18,7 +18,7 @@ class CreateSalesTable extends Migration
             $table->string('amount');
             $table->integer('quantity');
             $table->string('total');
-            $table->integer('added');
+            $table->integer('added')->default(0);
             $table->integer('subtracted');
             $table->integer('customer_id')->unsigned();
             $table->integer('product_id')->unsigned();

@@ -69,16 +69,18 @@ class SaleController extends Controller
             $savedSale->amount = $sale['amount'];
             $savedSale->quantity = $sale['quantity'];
             $savedSale->total = $sale['total'];
-            $savedSale->promo_code = $sale['promo_code'];;
 //            $savedSale->customer_id = $sale['customer_id'];
             $savedSale->product_id = $sale['product_id'];
-            $savedSale->user_id = $request->user()->id;
+            $savedSale->added = 0;
+            $savedSale->subtracted = 0;
+            $savedSale->customer_id = 1;
+            $savedSale->staff_id = $request->user()->id;
             $savedSale->save();
             $product = Product::find($sale['product_id']);
-            $product->quantity = $product->quantity - $sale->quantity;
+            $product->quantity = ($product->quantity - $sale['quantity']);
             $product->save;
     }
-        return response()->setStatusCode(201,"Resource Created");
+        return response()->json(['status'=>true])->setStatusCode(201,"Resource Created");
     }
 
     public function update(Request $request, $id)

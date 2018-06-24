@@ -38,5 +38,11 @@ class User extends Authenticatable
     public function hasRole($role)
     {
         return null !== $this->roles()->where("name", $role)->first();
-}
+    }
+    public function sales(){
+        return $this->hasMany(Sale::class);
+    }
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
 }

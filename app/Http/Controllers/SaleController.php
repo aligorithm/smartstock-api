@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use App\Product;
 use App\Promo;
 use App\Sale;
@@ -36,33 +37,48 @@ class SaleController extends Controller
     {
         $request->user()->authorizeRoles(['seller']);
         $this->validate($request,[
-            'amount' => 'required|string',
-            'quantity' => 'required|integer',
-            'total' => 'required|string',
-            'customer_id' => 'required|integer',
-            'product_id' => 'required|integer',
-            'staff_id' => 'required|integer',
+            'total_price' => 'required|string',
+            'sales' => 'required'
         ]);
         if (!empty($request->get('promo_code'))){
             $promo = Promo::all()->where('code',$request->get('promo_code'))->first();
             $expiryCarbon = Carbon::createFromFormat('d/m/Y', $promo->expiry);
             if ($expiryCarbon->isPast()){
-                $sale = new Sale();
-                $sale->amount = $request->get('amount');
-                $sale->quantity = $request->get('quantity');
-                $sale->total = ($request->get('total') - ($promo->discount / 100) * $request->get('total'));
-                $sale->customer_id = $request->get('customer_id');
-                $sale->product_id = $request->get('product_id');
-                $sale->staff_id = $request->get('staff_id');
-                $sale->save();
+                $order = new Order();
+                $order->total_price = $request->get('total_price');
+                $order->promo_code = $request->get('promo_code');
+                $order->charged = ($request->get('total_price') - ($promo->discount / 100) * $request->get('total_price'));
+                $order->discount = ($promo->discount / 100) * $request->get('total_price') - ($request->get('total_price'));
+                $order->user_id = $request->user()->id;
+                $order->save();
             }
         }else{
-            $sale = Sale::create($request->all());
+            $order = new Order();
+            $order->total_price = $request->get('total_price');
+            $order->promo_code = "N/A";
+            $order->charged = $request->get('total_price');
+            $order->discount = 0;
+            $order->user_id = $request->user()->id;
+            $order->save();
         }
-        $product = Product::find($sale->product_id);
-        $product->quantity = $product->quantity - $sale->quantity;
-        $product->save;
-        return response()->json(['sale'=>$sale])->setStatusCode(201,"Resource created");
+        $body = $request->json()->all();
+        $sales = $body['sales'];
+
+        foreach ($sales as $sale) {
+            $savedSale = new Sale();
+            $savedSale->amount = $sale['amount'];
+            $savedSale->quantity = $sale['quantity'];
+            $savedSale->total = $sale['total'];
+            $savedSale->promo_code = $sale['promo_code'];;
+//            $savedSale->customer_id = $sale['customer_id'];
+            $savedSale->product_id = $sale['product_id'];
+            $savedSale->user_id = $request->user()->id;
+            $savedSale->save();
+            $product = Product::find($sale['product_id']);
+            $product->quantity = $product->quantity - $sale->quantity;
+            $product->save;
+    }
+        return response()->setStatusCode(201,"Resource Created");
     }
 
     public function update(Request $request, $id)

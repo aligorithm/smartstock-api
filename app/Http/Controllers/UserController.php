@@ -31,7 +31,7 @@ class UserController extends Controller
         }else{
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        return response()->json(['user'=> $user,'token'=> "Bearer ".$token]);
+        return response()->json(['user'=> $user,'token'=> $token]);
 
     }
     public function register(Request $request)

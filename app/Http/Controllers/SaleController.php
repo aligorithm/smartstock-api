@@ -63,7 +63,6 @@ class SaleController extends Controller
         }
         $body = $request->json()->all();
         $sales = $body['sales'];
-
         foreach ($sales as $sale) {
             $savedSale = new Sale();
             $savedSale->amount = $sale['amount'];
@@ -76,11 +75,13 @@ class SaleController extends Controller
             $savedSale->customer_id = 1;
             $savedSale->staff_id = $request->user()->id;
             $savedSale->save();
-            $product = Product::find($sale['product_id']);
-            $product->quantity = ($product->quantity - $sale['quantity']);
+
+            $product = Product::all()->where('id','=',$sale['product_id'])->first();
+            $newQuantity = $product->quantity - $sale['quantity'];
+            $product->quantity = $newQuantity;
             $product->save;
     }
-        return response()->json(['status'=>true])->setStatusCode(201,"Resource Created");
+        return response()->json(['status'=>true,'order'=>$order,'sales',$sales])->setStatusCode(201,"Resource Created");
     }
 
     public function update(Request $request, $id)

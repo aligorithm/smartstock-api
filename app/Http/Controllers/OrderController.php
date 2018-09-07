@@ -9,6 +9,6 @@ class OrderController extends Controller
 {
     public function index()
     {
-        return response()->json(Order::all()->with);
+        return response()->json(Order::all());
     }
 }

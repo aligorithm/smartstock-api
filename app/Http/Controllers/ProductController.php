@@ -48,8 +48,7 @@ class ProductController extends Controller
         return response()->json(['brands'=> $brands,'categories'=> $categories,'products'=> $products,
             'today'=> $today,'promos'=> $promos])->setStatusCode(200);
     }
-    public function store(Request $request)
-    {
+    public function store(Request $request)    {
         $request->user()->authorizeRoles(['manager']);
         $this->validate($request,[
             'name' => 'required|string',

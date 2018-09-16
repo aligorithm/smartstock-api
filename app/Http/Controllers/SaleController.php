@@ -78,7 +78,7 @@ class SaleController extends Controller
             $savedSale->user_id = $request->user()->id;
             $savedSale->save();
 
-            $product = Product::all()->where('id','=',$sale['product_id'])->first();
+            $product = Product::find($sale['product_id']);
             $newQuantity = $product->quantity - $sale['quantity'];
             $product->quantity = $newQuantity;
             $product->save;

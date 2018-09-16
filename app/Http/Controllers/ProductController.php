@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Brand;
 use App\Category;
 use App\Product;
+use App\Promo;
+use App\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 /**
@@ -34,9 +37,16 @@ class ProductController extends Controller
      */
     /**@hideFromAPIDocumentation
      * */
-    public function create()
+    public function dashboard(Request $request)
     {
-        //
+        $request->user()->authorizeRoles(['manager']);
+        $brands = Brand::all()->count();
+        $categories = Category::all()->count();
+        $products = Product::all()->count();
+        $today = Sale::whereDate('created_at', Carbon::today())->count();
+        $promos = Promo::all()->count();
+        return response()->json(['brands'=> $brands,'categories'=> $categories,'products'=> $products,
+            'today'=> $today,'promos'=> $promos])->setStatusCode(200);
     }
     public function store(Request $request)
     {

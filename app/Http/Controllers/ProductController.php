@@ -23,7 +23,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        \request()->user()->authorizeRoles(['manager']);
+        \request()->user()->authorizeRoles(['seller','manager']);
         return response()->json(Product::with(['category','brand'])->get());
     }
 
@@ -44,9 +44,8 @@ class ProductController extends Controller
         $this->validate($request,[
             'name' => 'required|string',
             'description' => 'required|string',
-            'price' => 'required|string',
+            'price' => 'required',
             'quantity' => 'required|integer',
-            'code' => 'required|string',
             'brand' => 'required|string',
             'category' => 'required|string',
         ]);
@@ -78,7 +77,7 @@ class ProductController extends Controller
     }
     public function show($id)
     {
-        \request()->user()->authorizeRoles(['manager']);
+        \request()->user()->authorizeRoles(['manager','seller']);
         $product = Product::find($id);
         return response()->json($product)->setStatusCode(200);
     }
@@ -105,8 +104,6 @@ class ProductController extends Controller
         $product->description = $request->get('description');
         $product->price = $request->get('price');
         $product->quantity = $request->get('quantity');
-        $product->brand = $request->get('brand');
-        $product->category = $request->get('category');
         if (Brand::where("name",$request->get("brand"))->count() > 0){
             $brand = Brand::where("name",$request->get("brand"))->first();
             $product->brand_id = $brand->id;
@@ -124,12 +121,12 @@ class ProductController extends Controller
             $product->category_id = $category->id;
         }
         $product->save();
-        return response()->setStatusCode(204,"Resource Updated");
+        return response()->json()->setStatusCode(204,"Resource Updated");
     }
     public function destroy($id)
     {
         \request()->user()->authorizeRoles(['manager']);
         Product::destroy($id);
-        return response()->setStatusCode(200);
+        return response()->json()->setStatusCode(200);
     }
 }

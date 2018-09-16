@@ -13,6 +13,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
+
     }
     public function index(Request $request)
     {
@@ -27,6 +28,8 @@ class UserController extends Controller
             $user = User::all()->where('email','=',$request->get('email'))->first();
             if (Hash::check($request->get('password'),$user->password)){
                 $token = $user->createToken(\request('email'))->accessToken;
+            }else{
+                 return response()->json(['error' => 'Unauthorized'], 401);
             }
         }else{
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -88,6 +91,8 @@ class UserController extends Controller
             $user->roles()->attach($role_manager);
         }
         $user->save();
+
+        return response()->json()->setStatusCode(204,"User Updated");
     }
     public function destroy($id)
     {

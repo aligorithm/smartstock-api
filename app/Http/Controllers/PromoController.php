@@ -18,7 +18,7 @@ class PromoController extends Controller
      */
     public function index()
     {
-        $request->user()->authorizeRoles(['manager']);
+        \request()->user()->authorizeRoles(['manager']);
         return response()->json(Promo::all());
     }
 
@@ -35,8 +35,8 @@ class PromoController extends Controller
         $request->user()->authorizeRoles(['manager']);
         $this->validate($request,[
             'code' => 'required|string',
-            'expiry' => 'required|string',
-            'discount' => 'required|integer'
+            'expiry' => 'required',
+            'discount' => 'required'
         ]);
         $promo = Promo::create($request->all());
         return response()->json(['promo'=>$promo])->setStatusCode(201,"Resource created");
@@ -66,7 +66,8 @@ class PromoController extends Controller
         $promo = Promo::find($id);
         $promo->code = $request->get('code');
         $promo->expiry = $request->get('expiry');
-        return response()->json(['promo'=>$promo])->setStatusCode(200);
+        $promo->save();
+        return response()->json(['promo'=>$promo])->setStatusCode(200,"Resource Created");
     }
 
 
@@ -74,6 +75,6 @@ class PromoController extends Controller
     {
         \request()->user()->authorizeRoles(['manager']);
         Promo::destroy($id);
-        return response(null,200);
+        return response()->json()->setStatusCode(200,"Resource Delated");
     }
 }

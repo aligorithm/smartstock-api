@@ -30,14 +30,15 @@ class SaleController extends Controller
     public function edit(){}
     public function index()
     {
-        return response()->json(Sale::all());
+         \request()->user()->authorizeRoles(['seller','manager']);
+        return response()->json(Sale::with(['product','order','user'])->get());
     }
 
     public function store(Request $request)
     {
-        $request->user()->authorizeRoles(['seller']);
+        $request->user()->authorizeRoles(['seller','manager']);
         $this->validate($request,[
-            'total_price' => 'required|string',
+            'total_price' => 'required',
             'sales' => 'required'
         ]);
         if (!empty($request->get('promo_code'))){
@@ -69,11 +70,12 @@ class SaleController extends Controller
             $savedSale->quantity = $sale['quantity'];
             $savedSale->total = $sale['total'];
 //            $savedSale->customer_id = $sale['customer_id'];
+            $savedSale->order_id = $order->id;
             $savedSale->product_id = $sale['product_id'];
             $savedSale->added = 0;
             $savedSale->subtracted = 0;
             $savedSale->customer_id = 1;
-            $savedSale->staff_id = $request->user()->id;
+            $savedSale->user_id = $request->user()->id;
             $savedSale->save();
 
             $product = Product::all()->where('id','=',$sale['product_id'])->first();
@@ -81,7 +83,8 @@ class SaleController extends Controller
             $product->quantity = $newQuantity;
             $product->save;
     }
-        return response()->json(['status'=>true,'order'=>$order,'sales',$sales])->setStatusCode(201,"Resource Created");
+        return response()->json(['status'=>true,'order'=>$order,
+        'sales'=>Sale::with(['product'])->where('order_id',$order->id)->get()])->setStatusCode(201,"Resource Created");
     }
 
     public function update(Request $request, $id)
@@ -96,12 +99,12 @@ class SaleController extends Controller
 //        $sale->product_id = $request->get('product_id');
 //        $sale->staff_id = $request->get('staff_id');
 //        $sale->save();
-        return response()->setStatusCode(400,"Unsupported Action");
+        return response()->json()->setStatusCode(400,"Unsupported Action");
     }
 
     public function destroy($id)
     {
-        return response()->setStatusCode(400,"Delete not supported for this resource");
+        return response()->json()->setStatusCode(400,"Delete not supported for this resource");
     }
     public function show($id)
     {
@@ -110,10 +113,13 @@ class SaleController extends Controller
     }
 
     public function add(Request $request, $id){
-        $request->user()->authorizeRoles(['seller']);
+
+        $request->user()->authorizeRoles(['seller','manager']);
+
         $this->validate($request,[
             'quantity' => 'required'
         ]);
+
         $sale = Sale::find($id);
         $sale->quantity = $sale->quantity + $request->get('quantity');
         $sale->added = $sale->added + $request->get('quantity');
@@ -121,20 +127,21 @@ class SaleController extends Controller
         $sale->save();
         $product = Product::find($sale->product_id);
         $product->quantity = $product->quantity - $request->get('quantity');
-        return response()->setStatusCode(204,"Resource Updated");
+        return response()->json()->setStatusCode(204,"Resource Updated");
     }
     public function subtract(Request $request, $id){
-        $request->user()->authorizeRoles(['seller']);
+        $request->user()->authorizeRoles(['seller','manager']);
         $this->validate($request,[
             'quantity' => 'required'
         ]);
+
         $sale = Sale::find($id);
         $sale->quantity = $sale->quantity - $request->get('quantity');
-        $sale->subtracted = $sale->added + $request->get('quantity');
+        $sale->subtracted = $sale->subtracted + $request->get('quantity');
         $sale->total = $sale->quantity * $sale->price;
         $sale->save();
         $product = Product::find($sale->product_id);
         $product->quantity = $product->quantity + $request->get('quantity');
-        return response()->setStatusCode(204,"Resource Updated");
+        return response()->json()->setStatusCode(204,"Resource Updated");
     }
 }

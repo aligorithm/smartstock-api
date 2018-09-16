@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('user/register','UserController@register')->middleware('auth:api');
 Route::post('user/login','UserController@login');
 Route::get('user/list','UserController@index')->middleware('auth:api');
-Route::post('user/update','UserController@update')->middleware('auth:api');
+Route::post('user/update/{id}','UserController@update')->middleware('auth:api');
 Route::resource('product','ProductController')->middleware('auth:api');
 Route::resource('brand','BrandController')->middleware('auth:api');
 Route::resource('sale','SaleController')->middleware('auth:api');

@@ -22,7 +22,8 @@ class CreateSalesTable extends Migration
             $table->integer('subtracted');
             $table->integer('customer_id')->unsigned();
             $table->integer('product_id')->unsigned();
-            $table->integer('staff_id')->unsigned();
+            $table->integer('order_id')->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->timestamps();
         });
 

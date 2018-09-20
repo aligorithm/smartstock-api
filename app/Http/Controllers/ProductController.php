@@ -132,6 +132,26 @@ class ProductController extends Controller
         $product->save();
         return response()->json()->setStatusCode(204,"Resource Updated");
     }
+    public function addStock(Request $request, $id){
+
+        $request->user()->authorizeRoles(['manager']);
+
+        $this->validate($request,[
+            'quantity' => 'required'
+        ]);
+        $product = Product::find($id);
+        $product->quantity = $product->quantity + $request->get('quantity');
+        return response()->json()->setStatusCode(204,"Resource Updated");
+    }
+    public function removeStock(Request $request, $id){
+        $request->user()->authorizeRoles(['manager']);
+        $this->validate($request,[
+            'quantity' => 'required'
+        ]);
+        $product = Product::find($id);
+        $product->quantity = $product->quantity - $request->get('quantity');
+        return response()->json()->setStatusCode(204,"Resource Updated");
+    }
     public function destroy($id)
     {
         \request()->user()->authorizeRoles(['manager']);

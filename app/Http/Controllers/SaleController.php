@@ -72,6 +72,7 @@ class SaleController extends Controller
 //            $savedSale->customer_id = $sale['customer_id'];
             $savedSale->order_id = $order->id;
             $savedSale->product_id = $sale['product_id'];
+            $savedSale->customer_id = $sale['customer_id'];
             $savedSale->added = 0;
             $savedSale->subtracted = 0;
             $savedSale->customer_id = 1;
@@ -81,7 +82,7 @@ class SaleController extends Controller
             $product = Product::find($sale['product_id']);
             $newQuantity = $product->quantity - $sale['quantity'];
             $product->quantity = $newQuantity;
-            $product->save;
+            $product->save();
     }
         return response()->json(['status'=>true,'order'=>$order,
         'sales'=>Sale::with(['product'])->where('order_id',$order->id)->get()])->setStatusCode(201,"Resource Created");

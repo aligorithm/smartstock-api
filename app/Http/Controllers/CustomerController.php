@@ -24,15 +24,15 @@ class CustomerController extends Controller
     /**@hideFromAPIDocumentation
      * */
     public function edit(){}
-    public function index()
+    public function index(Request $request)
     {
         $request->user()->authorizeRoles(['manager']);
-        return response()->json(Customer::all());
+        return response()->json(Customer::with('sales')->get());
     }
 
     public function store(Request $request)
     {
-        $request->user()->authorizeRoles(['seller']);
+        $request->user()->authorizeRoles(['seller','manager']);
         $this->validate($request,[
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
@@ -40,12 +40,22 @@ class CustomerController extends Controller
             'email' => 'required|string|max:255'
         ]);
         $customer = Customer::create($request->all());
-        return response()->json(['brand'=>$customer])->setStatusCode(201,"Resource created");
+        return response()->json(['status'=>true,'customer'=>$customer])->setStatusCode(201,"Resource created");
+    }
+    public function search(Request $request){
+        $request->user()->authorizeRoles(['seller','manager']);
+        $this->validate($request,
+            [
+               'keyword' => 'required|string'
+            ]);
+        $keyword = $request->get('keyword');
+        $customers = Customer::where('name','like','%' . $keyword . '%')->orWhere('phone','like','%' . $keyword . '%');
+        return response()->json(['status'=>true,'customers',$customers])->setStatusCode(200);
     }
 
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['seller']);
+        $request->user()->authorizeRoles(['seller','manager']);
         $this->validate($request,[
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
